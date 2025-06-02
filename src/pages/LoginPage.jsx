@@ -1,34 +1,46 @@
-import React, { useState } from 'react';
-import API from '../utils/api';
-import { saveToken } from '../utils/auth';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-const LoginPage = () => {
+function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const res = await API.post('/auth/login', { email, password });
-      saveToken(res.data.token);
-      navigate('/vault');
-    } catch (err) {
-      alert('Login failed');
-    }
+    onLogin({ email, password });
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h2 className="text-xl font-bold mb-4">Login</h2>
-      <form onSubmit={handleLogin} className="space-y-4">
-        <input className="w-full border p-2" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input className="w-full border p-2" placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        <button className="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Login</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-sky-400 to-blue-600">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login to Vault</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+          >
+            Log In
+          </button>
+        </form>
+        <p className="text-sm text-center mt-4 text-gray-600">
+          Don't have an account? <a href="/register" className="text-blue-500 hover:underline">Register here</a>
+        </p>
+      </div>
     </div>
   );
-};
+}
 
 export default LoginPage;

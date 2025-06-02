@@ -1,32 +1,70 @@
-import React, { useState } from 'react';
-import API from '../utils/api';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-const RegisterPage = () => {
+function RegisterPage({ onRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [confirm, setConfirm] = useState('');
+  const [error, setError] = useState('');
 
-  const handleRegister = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await API.post('/auth/register', { email, password });
-      navigate('/login');
-    } catch (err) {
-      alert('Registration failed');
+
+    if (password !== confirm) {
+      setError('Passwords do not match');
+      return;
     }
+
+    onRegister({ email, password });
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h2 className="text-xl font-bold mb-4">Register</h2>
-      <form onSubmit={handleRegister} className="space-y-4">
-        <input className="w-full border p-2" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input className="w-full border p-2" placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        <button className="bg-green-600 text-white px-4 py-2 rounded" type="submit">Register</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600">
+      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Create an Account</h2>
+
+        {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+          >
+            Register
+          </button>
+        </form>
+
+        <p className="text-sm text-center mt-4 text-gray-600">
+          Already have an account?{' '}
+          <a href="/login" className="text-indigo-500 hover:underline">Login here</a>
+        </p>
+      </div>
     </div>
   );
-};
+}
 
 export default RegisterPage;
