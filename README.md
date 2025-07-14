@@ -1,5 +1,3 @@
----
-
 # VaultLock 🔐
 
 **Secure Cloud-Based Password Manager**
