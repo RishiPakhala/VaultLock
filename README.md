@@ -1,5 +1,3 @@
-Here's a **professional README.md** draft for your **VaultLock** project based on what I know about your build:
-
 ---
 
 # VaultLock 🔐
@@ -29,8 +27,8 @@ VaultLock is a secure password manager application that allows users to store, m
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/vaultlock.git  
-cd vaultlock  
+git clone https://github.com/RishiPakhala/VaultLock  
+cd VaultLock  
 ```
 
 ### 2️⃣ Setup Backend
